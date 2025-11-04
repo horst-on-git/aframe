@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>360 Video</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script> 
+
+</head>
+<body>
+<a-scene>
+  <a-assets>
+    <video id="dach" preload="auto"   
+               src="https://cdn.glitch.global/390e6692-91b4-41c8-a4b6-d09adbc8e9fb/dach_360_klein.mp4?v=1678462500289" 
+               width="160" height="90" autoplay loop="true"
+               muted></video>
+    
+  </a-assets>
+  
+  <a-entity material="shader: flat; src: #dach"
+                geometry="primitive: plane; width: 640; height: 320"
+                position="0 -60 -200"
+                rotation="0 -35 0"
+                play-on-click
+            visible="false"></a-entity>
+
+  <a-camera>
+        <a-entity
+          position="0 0 -1.5"
+          text="align: center;
+                width: 6;
+                wrapCount: 100;
+                color: black;
+                value: Click or tap to start video"
+          hide-on-play="#dach">
+        </a-entity>
+    </a-camera>
+
+</a-scene>
+ </body>
+</html>

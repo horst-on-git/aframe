@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title> Grep Flying boxes</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/aframe-master-v1.3.0.js?v=1683014950021"></script>
+	<script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/controller-listener.js?v=1682691154923"></script>
+	<script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/aframe-environment-component.js?v=1682962894183"></script>
+  <script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/player-move.js?v=1682962698468"></script>
+  <script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/raycaster-extras.js?v=1682962712952"></script>
+  <script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/physx.release.js?v=1682962735445"></script>
+  <script src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/physics.js?v=1682962745552"></script>
+	<!--
+        Content:
+        Author: 
+        URL:    
+        -->
+  </head>
+  <body>
+  <!--       -->
+    <script>
+
+AFRAME.registerComponent('updater', {
+	
+	init: function()
+	{
+		this.num = 0;
+		this.controllerData = document.querySelector("#controller-data").components["controller-listener"];
+		this.text = "";
+	},
+	
+	tick: function (time, timeDelta) 
+	{
+		this.num += 1;
+		this.el.setAttribute("text", "value", "Tick counter: " + this.num)
+
+	}
+	
+});
+
+</script>
+<!-- script for physics with kinematic boxes -->
+<script>
+AFRAME.registerComponent("physics-grab", {
+    init: function () 
+    {
+        let self = this;
+
+        this.el.addEventListener("raycaster-grabbed", function() {
+           self.el.addState("grabbed"); 
+        });
+
+        this.el.addEventListener("raycaster-released", function() {
+           self.el.removeState("grabbed"); 
+        });
+    },
+
+    tick: function()
+    {
+
+    }
+});
+
+
+</script> 
+<a-scene   physx="autoLoad: true; delay: 150; wasmUrl: https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/physx.release.wasm?v=1682963029579; useDefaultScene: false;" >
+		 <a-assets>
+			<img id="sky" src="https://cdn.glitch.global/390e6692-91b4-41c8-a4b6-d09adbc8e9fb/Grunewald_foto.jpg?v=1678459183421">
+		 </a-assets>
+		 <a-sky src="#sky"></a-sky>
+	
+	<a-entity 
+        id="player" 
+        position="0 0 0" 
+        player-move="controllerListenerId: #controller-data;
+                     navigationMeshClass: environmentGround;">
+        
+        <a-camera></a-camera>
+		
+
+	<a-entity 
+	    id="controller-data" 
+	    controller-listener="leftControllerId:  #left-controller; 
+	                         rightControllerId: #right-controller;">
+	</a-entity>
+
+	<a-entity 
+	    id="left-controller"
+	    oculus-touch-controls="hand: left">
+    </a-entity>
+	
+	<a-entity
+            id="right-controller"
+            oculus-touch-controls="hand: right"
+            raycaster="objects: .raycaster-target, .environmentGround;"
+            raycaster-extras="controllerListenerId: #controller-data; 
+                              beamImageSrc: #gradient; beamLength: 0.5;">
+    </a-entity>
+
+    	<!-- Floor -->
+
+	
+	
+	
+	    	<!-- flying objects can be grepped -->
+      <a-entity position="0 1.2 -3">
+        <a-sphere color="grey" radius="0.2"></a-sphere>
+        <a-entity position="1 0 0">
+          <a-animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 0"></a-animation>
+          <a-entity position="0 0 -2">
+            <a-box color="blue" 
+                   rotation="0 45 45" 
+                   animation__orbit="property: position; dur: 5000; loop: true; to: -2 2 2;" 
+			             physx-body="type: dynamic; highPrecision: true;"
+			             raycaster-target="canGrab: true;"
+			             physics-grab>
+            </a-box>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+	  
+	  <a-entity position="2.5 1.5 -2">
+
+        <a-entity position="1 0.3 -2">
+          <a-animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 0"></a-animation>
+          <a-entity position="0 0 1.0">
+            <a-box 
+                   color="yellow" 
+                   rotation="0 45 45" 
+                   animation__orbit="property: position; dur: 5000; loop: true; to: -9 0 0;" 
+			             physx-body="type: dynamic; highPrecision: true;"
+			             raycaster-target="canGrab: true;"
+			             physics-grab>
+            </a-box>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+	  <!--       -->
+	  <a-entity position="-5.5 -1.5 -2">
+
+        <a-entity position="1 0.3 -2">
+          <a-animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 0"></a-animation>
+          <a-entity position="0 0 1.0">
+            <a-box 
+                   color="green" 
+                   rotation="0 45 45" 
+                   animation__orbit="property: position; dur: 5000; loop: true; to: -9 6 -3;" 
+			             physx-body="type: dynamic; highPrecision: true;"
+			             raycaster-target="canGrab: true;"
+			             physics-grab>
+            </a-box>
+
+          </a-entity>
+        </a-entity>
+      </a-entity>
+	  <a-entity position="1 0 -3">
+
+        <a-entity position="-1. 4. -1." rotation="0 180 0">
+          <a-box color="red" width="0.5" height="0.5" depth="0.5"
+                 animation__position="property: position; dur: 4000; loop: true; to: 0.5 -8.6 -12; easing: linear"
+                 animation__rotation="property: rotation; dur: 5000; loop: true; to: 0 360 0"
+				 physx-body="type: dynamic; highPrecision: true;"
+				raycaster-target="canGrab: true;"
+				physics-grab></a-box>
+        </a-entity>
+      </a-entity>
+      </a-entity>
+	  
+      <a-camera position="0 1.6 0"></a-camera>
+    </a-scene>
+  </body>
+</html>

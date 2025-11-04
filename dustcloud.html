@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dust in Light Beam</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene background="color: #111">
+
+        <!-- Camera -->
+        <a-entity camera look-controls wasd-controls position="0 1.6 3"></a-entity>
+        
+        <!-- Light Beam -->
+        <a-entity id="light-beam"
+          geometry="primitive: cylinder; height: 5; radius: 0.5"
+          material="shader: flat; color: white; transparent: true; opacity: 0.5; blending: additive;"
+           rotation="90 0 0"
+           position="0 2.5 0"
+        >
+            <!-- Particle System for Dust (child of the beam)-->
+             <a-entity 
+             particle-system="preset: dust; color: #ff0000, #00ff00, #0000ff, #ffff00, #00ffff, #ff00ff; size: 0.05; maxAge: 2; particleCount: 300; 
+             velocityValue:0 0 0; accelerationValue: 0.5 0.1 0.5;
+                accelerationSpread: 0.2 0.2 0.2 ;
+           
+             positionSpread: 0.5 2 0.5;" 
+          
+          ></a-entity>
+        </a-entity>
+        
+       
+        <a-entity light="type: directional; intensity: 0.7; color: #fff" position="-1 2 1"></a-entity>
+
+    </a-scene>
+  </body>
+</html>

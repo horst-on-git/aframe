@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Video</title>
+    <meta name="description" content="Video - A-Frame">
+    <script src="aframe-master.js"></script>
+    <script src="play-on-click.js"></script>
+    <script src="hide-on-play.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <video id="videoFireworks" preload="auto"
+               src="https://cdn.glitch.global/390e6692-91b4-41c8-a4b6-d09adbc8e9fb/dach_360_klein.mp4?v=1678462500289"
+               width="640" height="360" autoplay loop="true"
+               muted></video>
+      </a-assets>
+
+      <!--
+      SOURCE
+      Title:  Big Buck Bunny
+      Author: Blender Institute
+      URL:    https://peach.blender.org/
+      -->
+
+
+      <!--
+      SOURCE
+      Title:  Fireworks
+      Author: Motion Digital
+      URL:    https://www.videvo.net/profile/motiondigital/
+      -->
+      <a-entity material="shader: flat; src: #videoFireworks"
+                geometry="primitive: plane; width: 640; height: 360"
+                position="0 -60 -200"
+                rotation="0 -15 0"     
+                play-on-click
+                visible="false">
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>

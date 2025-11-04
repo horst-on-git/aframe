@@ -1,0 +1,36 @@
+<html>
+  <head>
+  <title>Presets and geos</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> 
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
+	<script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+  </head>
+  <body>
+  <a-scene>
+  <a-box id="cube" position="-1 0.66921 -3" rotation="0 45 0" color="#4CC3D9" visible="true"></a-box>
+      <a-sphere id="sphere" position="0 1.44508 -5" radius="1.25" color="#EF2D5E" ></a-sphere>
+      <a-cylinder id="cylinder" position="1 0.8993 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+      <a-entity id="env" environment="preset: forest"></a-entity>
+  </a-scene>
+
+</body>
+
+<script>
+    var scene = document.querySelector('a-scene');
+    var cylinder = document.createElement('a-cylinder');
+    cylinder.setAttribute('color', '#FF9500');
+    cylinder.setAttribute('height', '1.5');
+    cylinder.setAttribute('radius', '0.6');
+    cylinder.setAttribute('position', '1.5 0.5 -2');
+    scene.appendChild(cylinder);
+    var t = 0;
+    function render() {
+      t += 0.01;
+      requestAnimationFrame(render);
+      cylinder.setAttribute('position', '1.5 '+(Math.sin(t*2)+1)+' -2.9');
+    }
+    render();
+  </script>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>A-Frame multiple camera scene</title>
+	<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- <script src="https://unpkg.com/aframe-immersive-video-component/dist/aframe-immersive-video-component.min.js"></script> 
+    <script src="//cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script> -->
+    <script src="camrender.js"></script>
+      <!--    for grabbing with the hands -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-super-hands-component@7d95eef/dist/super-hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/examples/components/grab.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/examples/components/force-pushable.js"></script>
+</head>
+
+<body>
+    <a-scene physics="driver: ammo; debug: true; debugDrawMode: 1;">
+
+
+
+  <!-- overlay with moving entities in transparent view    -->
+  <a-assets>
+        <canvas id="cam1"></canvas>
+        <canvas id="cam2"></canvas>
+        <canvas id="cam3"></canvas>
+        <canvas id="cam4"></canvas>
+      </a-assets>
+      
+  
+      
+	  <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9" shadow
+        animation="startEvents: click; property: position;
+          from: -1 1.5 -3; to: -1 0.5 -3 dur: 1000">
+      </a-box>
+      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E" shadow
+        animation="startEvents: click; property: scale;
+          from: 2 2 2; to: 1 1 1; dur: 1000">
+      </a-sphere>
+      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D" shadow
+        animation__enter="startEvents: mouseenter; property: scale;
+          to: 2 2 2; dur: 1000"
+        animation__leave="startEvents: mouseleave; property: scale;
+          to: 1 1 1; dur: 1000">
+      </a-cylinder>
+
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" shadow></a-plane>
+ 
+      <!-- Objects in the inner camera view 2. video 
+      <a-videosphere src="https://cdn.glitch.me/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/Grunewald_V9.mp4?v=1707072860397"></a-videosphere>
+       -->
+      <a-videosphere src="https://cdn.glitch.me/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/theo.mp4?v=1710775144357"></a-videosphere>
+   	  
+      
+	  <!-- Cursor controls -->
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <a-entity laser-controls="hand: right"></a-entity>
+	  
+
+	  
+      <!-- Rig for the "regular" camera, linked to movement controls,
+           includes a cone, a rear camera, and screens for view-from-above and rear cameras -->
+      <a-entity position=".5 0 5" movement-controls="fly: true; speed: 0.1; camera: #priCam"> 
+	  
+        <!-- Main (regular) camera --> 
+        <a-entity id="priCam" camera camrender="cid: cam1"
+                  position="0 1.6 0" look-controls>
+          <a-cone color="brown" radius-bottom=".2" radius-top=".05" height=".5"
+                  position="0 -.6 -1" rotation="-80 0 0"></a-cone>        
+        </a-entity>
+      </a-entity>
+
+      <!-- Screen for showing the main camera -->
+      <a-plane position="4 1 1" rotation="0 -15 0" width="4.5" height="3.5"
+               material="color: black">
+        <a-text position="-.3 1.56 .2" value="Main view" color="red"></a-text>
+        <a-plane position="0 0 .1" width="4" height="3"
+                 material="src:#cam1" canvas-updater></a-plane>
+      </a-plane>
+
+  
+
+    
+
+      
+</a-scene>
+
+</body>
+</html>

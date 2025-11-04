@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+			<img id="sky" src="https://cdn.glitch.global/390e6692-91b4-41c8-a4b6-d09adbc8e9fb/Grunewald_foto.jpg?v=1678459183421">
+	  </a-assets>
+	  <a-sky src="#sky"></a-sky>
+      <a-entity position="0 1.2 -3">
+        <a-sphere color="grey" radius="0.2"></a-sphere>
+        <a-entity position="1 0 0">
+          <a-animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 0"></a-animation>
+          <a-entity position="0 0 -2">
+            <a-box color="blue" rotation="0 45 45" animation__orbit="property: position; dur: 5000; loop: true; to: -2 2 2"></a-box>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+	  
+	  <a-entity position="2.5 1.5 -2">
+
+        <a-entity position="1 0.3 -2">
+          <a-animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 0"></a-animation>
+          <a-entity position="0 0 1.0">
+            <a-box color="yellow" rotation="0 45 45" animation__orbit="property: position; dur: 5000; loop: true; to: -9 0 0"></a-box>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+	  
+	  <a-entity position="-5.5 -1.5 -2">
+
+        <a-entity position="1 0.3 -2">
+          <a-animation attribute="rotation" dur="5000" repeat="indefinite" to="0 360 0"></a-animation>
+          <a-entity position="0 0 1.0">
+            <a-box color="green" rotation="0 45 45" animation__orbit="property: position; dur: 5000; loop: true; to: 9 6 -3"></a-box>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+	  <a-entity position="1 0 -3">
+
+        <a-entity position="-1 4. -1" rotation="0 180 0">
+          <a-box color="red" width="0.5" height="0.5" depth="0.5"
+                 animation__position="property: position; dur: 4000; loop: true; to: 0.5 -8.6 -12; easing: linear"
+                 animation__rotation="property: rotation; dur: 5000; loop: true; to: 0 360 0"></a-box>
+        </a-entity>
+      </a-entity>
+	  
+      <a-camera position="0 1.6 0"></a-camera>
+    </a-scene>
+  </body>
+</html>

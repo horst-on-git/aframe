@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello, WebVR! - A-Frame</title>
+    <meta name="description" content="Hello, WebVR! - A-Frame">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <style type="text/css">
+      #splash {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        align-items: center;
+        justify-content: center;
+        
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        cursor: pointer;
+        z-index: 999;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function(event) {
+        var scene = document.querySelector("a-scene");
+        var vid = document.getElementById("video");
+        var videoShere = document.getElementById("videoShere");
+
+        if (scene.hasLoaded) {
+          run();
+        } else {
+          scene.addEventListener("loaded", run);
+        }
+        
+        function run () {
+          if(AFRAME.utils.device.isMobile()) {
+            document.querySelector('#splash').style.display = 'flex';
+            document.querySelector('#splash').addEventListener('click', function () {
+              playVideo();
+              this.style.display = 'none';
+            })
+          } else {
+              playVideo();
+          }
+        }
+        
+        function playVideo () {
+          vid.play();
+          videoShere.components.material.material.map.image.play();
+        }
+      })
+    </script>
+  </head>
+  <body>
+    <div id="splash">
+      <div id="start-button">Start</div>
+    </div>
+    <a-scene>
+      <a-assets>
+          <video id="video" src="https://ucarecdn.com/fadab25d-0b3a-45f7-8ef5-85318e92a261/" webkit-playsinline></video>
+      </a-assets>
+      
+      <a-entity camera="userHeight: 1.6" look-controls cursor="rayOrigin: mouse"></a-entity>
+
+      <a-videosphere id="videoShere" loop="true" src="#video" rotation="0 -90 0"></a-videosphere>
+    </a-scene>
+  </body>
+</html>

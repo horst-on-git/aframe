@@ -1,0 +1,27 @@
+<html>
+
+<head>
+	<title>Fireworks!</title>
+	<meta name="description" content="A-Frame Examples">
+	<script src="js/aframe-master.1.0.4.min.js"></script>
+	<script src="js/aframe-environment-component.min-old.js"></script>
+	<script src="js/aframe-spe-particles-component.js"></script>
+   	<script src="js/aframe-spritesheet-animation.js"></script>
+</head>
+<body>	
+<a-scene>
+  <!-- Die Kugel in der Mitte -->
+  <a-sphere position="0 1.5 -5" radius="1" color="red"></a-sphere>
+  <!-- Der Würfel, der um die Kugel kreist -->
+  <a-box position="2 1.5 -5" width="0.5" height="0.5" depth="0.5" color="blue">
+    <!-- Die Animation der Position des Würfels -->
+    <a-animation attribute="position"
+                 from="2 1.5 -5"
+                 to="-2 1.5 -5"
+                 dur="2000"
+                 repeat="indefinite"
+                 direction="alternate"></a-animation>
+  </a-box>
+</a-scene>
+</body>	
+</html>

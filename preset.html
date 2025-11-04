@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Environments - 01</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js">
+    </script>
+    //<script src="../js/livecode.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-box position="0 0 -2" height="2" rotation="0 45 0" color="red"></a-box>
+
+      <!-- https://github.com/feiss/aframe-environment-component/ -->
+      <a-entity environment="preset: goldmine"></a-entity>
+      <!-- none, default, contact, egypt, checkerboard, forest, goaland, yavapai, goldmine, threetowers, poison, arches, tron, japan, dream, volcano, starry, osiris 
+-->
+    </a-scene>
+    <script>
+    var scene = document.querySelector('a-scene');
+    var cylinder = document.createElement('a-cylinder');
+    cylinder.setAttribute('color', '#FF9500');
+    cylinder.setAttribute('height', '1.5');
+    cylinder.setAttribute('radius', '0.6');
+    cylinder.setAttribute('position', '1.5 0.5 -2');
+    scene.appendChild(cylinder);
+    var t = 0;
+    function render() {
+      t += 0.01;
+      requestAnimationFrame(render);
+      cylinder.setAttribute('position', '1.5 '+(Math.sin(t*2)+1)+' -2.9');
+    }
+    render();
+  </script>
+
+  </body>
+</html>

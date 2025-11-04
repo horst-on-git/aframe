@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>aframe-vartiste-toolkit physics playground</title>
+    <meta name="description" content="Hello, WebVR! • A-Frame">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/aframe-enviropacks@0.9.0/aframe-enviropacks.js"></script>
+
+    <!-- 
+      Since I've included a copy of the physics source directly in this glitch, I'm excluding it from the toolkit so it's easier to modify it and test it here. However, if you just want to use it without modifications, you can just include the vartiste-toolkit.js file
+    -->
+    <script>
+      VARTISTE_TOOLKIT = { excludeFiles: ["physics"], excludeComponents: ["file-upload"], includeCompositor: true };
+    </script>
+    
+    <script src="https://unpkg.com/aframe-vartiste-toolkit@1.28.1/vartiste-toolkit.js"></script>
+    
+
+    <script src="https://unpkg.com/aframe-template-component@^3.1.1/dist/aframe-template-component.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-gltf-helpers@0.0.2/dist/aframe-gltf-helpers.min.js"></script>
+    <script src="https://unpkg.com/aframe-hologram-shader"></script>
+    
+    <!-- If you're using the VARTISTE toolkit, you don't need these files, since they're already there -->
+    <script src="physx.release.js"></script>
+    <script src="physics.js"></script>
+    
+    <script src="playground.js"></script>
+  </head>
+  <body>
+    <a-scene background="color: #ECECEC" 
+             renderer="colorManagement: true; physicallyCorrectLights: true" 
+             enviropack-material="shader: auto" 
+             spectator-camera="camera: #spectator-camera; throttle: 20;"
+             brush-system="autoLoadBrushes: false"
+             physx="autoLoad: true; wasmUrl: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fphysx.release.wasm?v=1616713973840">
+      <a-assets>
+        <img id="asset-arrow-all" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Farrow-all.png?v=1614042472057">
+        <img id="asset-play-pause" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fplay-pause.png?v=1614042982325">
+        <img id="asset-chevron-up" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fchevron-up.png?v=1614042988698">
+        <img id="asset-chevron-down" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fchevron-down.png?v=1614042990238">
+        <img id="asset-video-vintage" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fvideo-vintage.png?v=1614786268424">
+        <img id="asset-dragondrop" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fdragondrop-2021-04-09T00.png?v=1618010777172">
+        <img id="asset-paint-brush" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Flines_condensed.png?v=1621631868666">
+        <a-asset-item id="asset-meredith" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fmeredith-2021-02-22T15.glb?v=1614009054482"></a-asset-item>
+        <a-asset-item id="asset-stapler" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fstapler-painted.glb?v=1615077237049"></a-asset-item>
+        <a-asset-item id="asset-entity-test" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fentitytest.glb?v=1615161076084"></a-asset-item>
+        <a-asset-item id="asset-golf-club" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fgolf-density.glb?v=1615167084691"></a-asset-item>
+<!--         <a-asset-item id="asset-breaksangaoid" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fbreaksagnaoid.glb?v=1616710844165"></a-asset-item> -->
+        <a-asset-item id="asset-windthing" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fwindthing.glb?v=1618011868713"></a-asset-item>
+        <a-asset-item id="asset-easel" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Feasel-entities.glb?v=1621544142326"></a-asset-item>
+        <a-asset-item id="asset-vase" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fvase.glb?v=1621727129438"></a-asset-item>
+        <a-asset-item id="asset-vase-collision" src="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fvase-draw-collision.glb?v=1621728348904"></a-asset-item>
+        <a-mixin id="pingpong"  
+                 resetable-object=""  
+                 physx-contact-sound="impulseThreshold: 0.011; src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fui_lock.wav?v=1614442577475" geometry="primitive: sphere; radius: 0.01" 
+                 enviropack-material="material: plastic" shadow 
+                 physx-body="emitCollisionEvents: true; type: dynamic; mass: 0.0027; angularDamping: 2" physx-material="staticFriction: 0.5; dynamicFriction: 0.7; restitution: 1.0"></a-mixin>
+        <a-mixin id="golfball"  
+                 resetable-object=""  
+                 physx-contact-sound="impulseThreshold: 0.011; src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fui_lock.wav?v=1614442577475" geometry="primitive: sphere; radius: 0.02" 
+                 enviropack-material="material: plastic" shadow 
+                 physx-body="emitCollisionEvents: true; type: dynamic; mass: 0.045; angularDamping: 1" physx-material="staticFriction: 0.5; dynamicFriction: 0.7; restitution: 1.0"></a-mixin>
+        <a-mixin id="bowlingpin" physx-contact-sound="impulseThreshold: 0.011; src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fui_lock.wav?v=1614442577475" resetable-object=""  geometry="primitive: box; width: 0.05; height: 0.2; depth: 0.04" enviropack-material="material: sandstone_cracks" shadow physx-body="type: dynamic; mass: 0.0087; angularDamping: 1" physx-material="staticFriction: 0.5; dynamicFriction: 0.7; restitution: 1.0"></a-mixin>
+        
+        <script id="pingpongballs" type="text/x-jade-template">
+          - for (var x = 0; x < 6; x++) {
+            - for (var z = 0; z < 6; z++) {
+              a-entity(class="clickable", mixin="pingpong", position="#{x * 0.021} 0 #{z * 0.021}")
+            - }
+          - }
+        </script>
+        <script id="golfballs" type="text/x-jade-template">
+          - var colors = ["#F065D2", "#4E9EF0", "#F0AA35", "#63F041", "#F05B50"]
+          - for (var x = 0; x < colors.length; x++) {
+            a-entity(id="golfball-#{x}" class="clickable", mixin="golfball", material="color: #{colors[x]}", position="#{x * 0.1} 0.1 0", physx-joint="type: Fixed; breakForce: 6 1000")
+            a-entity(material="color: #{colors[x]}", position="#{x * 0.1} 0.04 0", geometry="primitive: cone; radiusTop: 0.01; radiusBottom: 0.005; height: 0.085" physx-body="type: static")
+          - }
+        </script>
+        <script id="bowlingpins" type="text/x-jade-template">
+          - for (var z = 0; z < 7; z++) {
+            a-entity(position="#{- 0.15 * z / 2} 0 #{z * 0.15}")
+              - for (var x = 0; x < z; x++) {
+                a-entity(mixin="bowlingpin", position="#{x * 0.15} 0 0")
+              - }
+          - }
+        </script>
+      </a-assets>
+      <a-sky color="#333"></a-sky>
+      
+      <a-entity enviropack="preset: tankfarm" fix-enviropack-lights></a-entity>
+      
+      <a-sphere class="clickable"  position="0 3.25 -5" radius="1.25" enviropack-material="material: metal" shadow physx-body="type: dynamic; mass: 20; angularDamping: 1" manipulator-weight="weight: 0.8" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fbigbump.wav?v=1614448386445; positionAtContact: true"></a-sphere>
+      
+      <a-entity id="ping-pong-station">
+        <a-box physx-body="type: static" physx-material="staticFriction: 0.8; dynamicFriction: 0.8; restitution: 0.7" enviropack-material="material: planks" shadow></a-box>
+        
+        <a-entity position="0 0.5 0.1"><a-entity template="src: #pingpongballs"></a-entity></a-entity>
+      
+        <a-entity id="paddle" resetable-object="" class="grab-root" position="-0.2 0.5 0.1" shadow physx-body="type: dynamic; mass: 0.1; emitCollisionEvents: true" rotation="0 160 0" _physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fsfx-clock.wav?v=1614440370112">
+          <a-box class="clickable" propogate-grab="" position="0 0 -0.175" width="0.05" depth="0.2" height="0.012" enviropack-material="material: fabric" physx-material="staticFriction: 0.9; dynamicFriction: 0.8; restitution: 0.1; density: 600"></a-box>
+          <a-cylinder class="clickable" propogate-grab="" radius="0.1" height="0.01" enviropack-material="material: wood" physx-material="staticFriction: 0.5; dynamicFriction: 0.8; restitution: 0.7; density: 200"></a-cylinder>
+        </a-entity>
+        
+        <a-entity id="ping-pong-table" physx-body="type: static; mass: 100" physx-material="staticFriction: 0.8; dynamicFriction: 0.4; restitution: 0.99" position="0 0 1.5">
+          <a-box position="0 0.5 1" width="1" height="0.1" depth="1.5" enviropack-material="material: plastic" material="color: #444" physx-material="staticFriction: 0.8; dynamicFriction: 0.4; restitution: 0.99" shadow></a-box>
+          <a-box position="0 1 1.75" width="1" height="0.1" depth="1" rotation="-90 0 0" enviropack-material="material: plastic" material="color: #444" physx-material="staticFriction: 0.8; dynamicFriction: 0.4; restitution: 0.99"></a-box>
+          <a-cylinder position="0 0.25 1" radius="0.3" height="0.5" enviropack-material="material: sandstone_cracks"></a-cylinder>
+        </a-entity>
+        
+        <a-sphere class="clickable" resetable-object="" position="0.3 0.6 0" radius="0.1" enviropack-material="material: gold" shadow physx-body="type: dynamic; mass: 10; angularDamping: 0.4" manipulator-weight="weight: 0.85; type: slow" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fsfx-click.wav?v=1614442625479"></a-sphere>
+        
+        
+        <a-entity scale="0.7 0.7 0.7" position="-0.597 0.039 0" resetable-object="">
+          <a-entity id="golf" redirect-grab="#golf-joint-target" _dual-wieldable class="clickable" gltf-model="#asset-golf-club" gltf-entities physx-body="type: dynamic; angularDamping: 10" manipulator-weight="weight: 0.4; type: slow" material="color: #aaaaff">
+            <a-entity position="0.164 1.038 0.067" physx-joint="type: Fixed; target: #golf-joint-target" rotation="0 0 90"></a-entity>
+          </a-entity>
+          <a-entity id="golf-joint-target" physx-body="type: dynamic; mass: 0.001" physx-material="collidesWithLayers: 0; collisionLayers: 0" position="0.164 1.038 0.067" _position="0.114 0.726 0.0"><a-sphere radius="0.04" physx-no-collision="" visible="false"></a-sphere></a-entity>
+        </a-entity>
+        
+        <a-entity id="golf2" dual-wieldable class="clickable" gltf-model="#asset-golf-club" gltf-entitie physx-body="type: dynamic" _manipulator-weight="weight: 0.4; type: slow" position="-0.597 0.039 0.2" scale="0.7 0.7 0.7"></a-entity>
+        
+        <a-entity id="meredith" resetable-object=""  class="grab-root" position="-0.263 0.693 -0.225" physx-body="type: dynamic; mass: 15" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fsqueeze.wav?v=1614444281212">
+          <a-entity propogate-grab="" class="clickable" scale="0.5 0.5 0.5" gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fmeredith-2021-02-22T15.glb?v=1614009054482" physx-material="staticFriction: 0.9; dynamicFriction: 0.8; restitution: 0.1" physx-no-collision="" shadow></a-entity>
+          <a-entity scale="0.5 0.5 0.5" gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fmeredith-collision.glb?v=1614013056553" physx-hidden-collision="" visible="false"></a-entity>
+        </a-entity>
+        
+         <a-entity id="stapler" position="0.075 0.730 -0.170" rotation="0.000 -49.783 0.000" scale="0.075 0.075 0.075">
+          <a-entity id="stapler-top" physx-body="type: dynamic; mass: 0.1" class="grab-root" stapler _dual-wieldable physx-contact-event="" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fstapler.wav?v=1615078625013">
+            <a-entity class="clickable" propogate-grab="" gltf-part-plus="src: #asset-stapler; part: Top" shadow></a-entity>
+            <a-entity gltf-part-plus="src: #asset-stapler; part: Cube001" shadow></a-entity>
+            <a-entity raycaster="objects: *[aaphysx-body]; far: 10.5; near: 0.01; showLine: true; enabled: true; direction: 0 -1 0; " position="0 1 0" physx-no-collision _scalable-raycaster></a-entity>
+            
+            <a-entity physx-joint="target: #stapler-bottom; type: D6; collideWithTarget: true" physx-joint-driver="lockOtherAxes: true; axes: twist; slerpRotation: false; stiffness: 2; damping: 0; useAcceleration: false" position="0 0.0254418 -3.7280"></a-entity>
+          </a-entity>            
+          <a-entity id="stapler-bottom" gltf-part-plus="src: #asset-stapler; part: Bottom" physx-body="type: dynamic" shadow no-staple dual-wieldable class="clickable"></a-entity>
+        </a-entity>
+        
+      </a-entity>
+      
+      
+      <a-entity id="bowling-lane" position="-3 0 1" rotation="0 -90 0">
+        <a-entity template="src: #bowlingpins" position="0 0.1 0"></a-entity>
+      </a-entity>
+      
+      <a-entity id="windthing" scale="0.3 0.3 0.3" position="0 0 5" gltf-model="#asset-windthing" gltf-entities=""></a-entity>
+      
+      <a-entity position="0 0.5 0.07">
+        <a-entity position="0 0.1 0" physx-body="type: dynamic">
+          <a-box width="0.3" height="0.01" depth="0.05" enviropack-material="material: mossy_rock" ></a-box>
+<!--           <a-box width="0.01" height="0.07" depth="0.05" enviropack-material="material: rock" position="-0.17 0.035 0"></a-box> -->
+          <a-entity physx-joint="target: #seesaw-anchor; type: Revolute; breakForce: 350 350" rotation="0 90 0"></a-entity>
+        </a-entity>
+        <a-entity id="seesaw-anchor" geometry="primitive: cone; radiusTop: 0.01; radiusBottom: 0.03; height: 0.095" position="0 0.045 0" enviropack-material="material: rock" physx-body="type: static"></a-entity>
+      </a-entity>
+      
+      <a-entity id="hammer-game" position="1.4 0 1">
+        <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fleeveruge-2021-02-23T01.glb?v=1614043943959" scale="0.02 0.02 1" rotation="0 -79.387 0" position="-0.060 0.822 -0.322"></a-entity>
+        <a-box geometry="depth:  0.07;  height:  1.59;  width:  0.4" rotation="0 -79.387 0" position="-0.060 0.822 -0.322" visible="false" physx-body="static"></a-box>
+        <a-box position="0 0.2 0" width="0.1" height="0.1" depth="0.1" physx-body="mass: 2" material="emissive: #500" enviropack-material="material: gold" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fsfx-click.wav?v=1614442625479">
+          <a-entity light="color: #ffb3b3; decay: 1.44; type: point" position="-0.08535 0 -0.13623"></a-entity>
+          <a-entity physx-joint="type: Prismatic" rotation="0 0 90"></a-entity>
+        </a-box>
+        <a-entity id="hammer-slide-joint" position="0 0.2 0" physx-body="type: static"></a-entity>
+        <a-entity id ="win-target" 
+                  geometry="primitive: dodecahedron; radius: 0.1" position="0 1.6 0" physx-body="type: static; emitCollisionEvents: true" hammer-star="" enviropack-material="material: gold" material="color: red" animation__ding="property: material.emissive; easing: linear; dir: alternate; from: #111100; to: #aaaa00; dur: 1000; loop: 6; startEvents: contactbegin "
+                  physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fnavigation_forward-selection.wav?v=1614442952624"
+                  ></a-entity>
+        
+        <a-box width="1" height="0.01" depth="0.1" position="-0.48 0.09 00" enviropack-material="material: wood" physx-body="type: dynamic">
+          <a-entity physx-joint="target: #hammer-lever-joint; type: Revolute" rotation="0 90 0"></a-entity>
+        </a-box>
+        <a-entity id="hammer-lever-joint" position="-0.48 0.09 00" physx-body="type: static"></a-entity>
+      </a-entity>
+      
+      <a-entity shelf="name: Welcome" class="grab-root" scale="0.3 0.3 0.3" position="1.840 1.325 -1.429" rotation="0 -26.4 0" _physx-body="type: kinematic">
+        <a-entity text="width: 3; value: Welcome to my physics playground. It's a work in progress, so check back periodically" position="0 0.9 0"></a-entity>
+        <a-entity position="-1.5 0.2 0">
+          <a-entity icon-row="">
+            <a-entity icon-button="#asset-arrow-all" tooltip="Reset All Objects" system-click-action="system: resetable-object; action: resetAll"></a-entity>
+            <a-entity icon-button="#asset-play-pause" tooltip="Play / Pause Physics" onclick="this.sceneEl.systems.physx.running = !this.sceneEl.systems.physx.running"></a-entity>
+            <a-entity icon-button="#asset-chevron-up" tooltip="Speed Up Time" onclick="this.sceneEl.systems.physx.data.speed *= 1.5"></a-entity>
+            <a-entity icon-button="#asset-chevron-down" tooltip="Slow Down Time" onclick="this.sceneEl.systems.physx.data.speed /= 1.5"></a-entity>
+            <a-entity icon-button="#asset-video-vintage" tooltip="Use Spectator Camera" toggle-button="target: a-scene; component: playground; property: useSpectatorCamera"></a-entity>
+          </a-entity>
+          <a-entity icon-row="">
+            <a-entity icon-button="#asset-chevron-up" tooltip="Rise Up" onclick="this.sceneEl.querySelector('*[playground-user-root]').components['playground-user-root'].move(0, 1, 0)"></a-entity>
+            <a-entity icon-button="#asset-chevron-down" tooltip="Rise Down" onclick="this.sceneEl.querySelector('*[playground-user-root]').components['playground-user-root'].move(0, -1, 0)"></a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+      
+      <a-entity id="bug-station" position="-8.927 0 -14">
+        <a-entity id="bug" bug="" physx-body="type: dynamic; mass: 10; angularDamping: 30" position="0 0.2 0" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fmerp.mp3?v=1614447530281; positionAtContact: true">
+<!--           <a-entity physx-joint="type: D6" bug-driver rotation="0 90 90"></a-entity> -->
+          <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fwrinklebug-walk.glb?v=1614450320805" scale="2 2 2" animation-mixer="clip: feetwalk" physx-no-collision="" shadow></a-entity>
+          <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fwrinklebug-collision.glb?v=1614133595109" scale="2 2 2" physx-hidden-collision="" visible="false" physx-material="staticFriction: 0.1; dynamicFriction: 0.8; restitution: 0.4; restOffset: 0.005"></a-entity>
+        </a-entity>
+      </a-entity>
+      
+      <a-entity id="sword-in-stone" position="-6.833 -0.035 -3.640">
+        <a-entity id="sword-stone" enviropack-prop="prop: rock" enviropack-material="material: sandstone_cracks" scale="3 3 3" shadow physx-body="type: static"></a-entity>
+        
+        <a-entity id="weirdsword-root" position="0 1.0 0" rotation="180 0 0">
+          <a-entity id="weirdsword" physx-body="type: dynamic; angularDamping: 10; highPrecision: true" physx-material="contactOffset: 0.05;" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fclash.wav?v=1614447091047; positionAtContact: true">
+            <a-entity id="pull-the-sword" physx-joint="type: Prismatic; target: #sword-stone" rotation="0 0 90" break-when-sword-above="0.65"></a-entity>
+            <a-entity redirect-grab="#weirdsword-joint-target" class="clickable" gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fweirdswordsculpt-painted-d.glb?v=1614295043252" physx-no-collision="" shadow></a-entity>
+            <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fweirdswordsculpt-collision.glb?v=1614343745840" physx-hidden-collision="" visible="false"></a-entity>
+          </a-entity>
+          <a-entity id="weirdsword-joint-target" dual-wield-target="target: #weirdsword; wobblySword: true" _physx-body="type: dynamic; mass: 0.0001" physx-material="collidesWithLayers: 0; collisionLayers: 0" manipulator-weight="weight: 0.4; type: slow"></a-entity>
+        </a-entity> 
+      </a-entity>
+      
+      <a-entity id="scarecrow" position="5.223 0.05 -1" physx-body="type: dynamic; mass: 1" physx-contact-sound="src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Ffarsqueeze.mp3?v=1614804267815; positionAtContact: true">
+        <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fscarecrow-painted.glb?v=1614800075954" scale="2 2 2" physx-no-collision="" shadow></a-entity>
+        <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fscarecrow-collision.glb?v=1614800079030" scale="2 2 2" physx-hidden-collision="" shadow visible="false" physx-material="collidesWithLayers: 1, 3, 4;"></a-entity>
+        <a-entity physx-joint="type: D6; softFixed: true;" physx-joint-constraint="constrainedAxes: swing; limitCone: 0.01 0.01; stiffness: 50; damping: 20; restitution: 0.5" rotation="0 0 0" 
+                  physx-joint-driver="stiffness: 1000; damping: 3; forceLimit: 300000; useAcceleration: false; axes: swing, twist"></a-entity>
+      </a-entity>
+      <a-sphere position="3.570 0.386 -3.561"
+                radius="0.240"
+                physx-body="type: dynamic; mass: 0.4; angularDamping: 4; linearDamping: 1"
+                shadow
+                class="clickable"
+                material="normalScale: 0.4 -0.4; src: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2FFabric048_2K_Color.jpg?v=1614811116106; normalMap: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2FFabric048_2K_Normal.jpg?v=1614811116294; roughnessMap: https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2FFabric048_2K_Roughness.jpg?v=1614811116221"></a-sphere>
+      
+      <a-entity id="golf-course" position="9.5 0.001 8.0" rotation="0 180 0">
+        <a-entity position="-0.35 0.1 -1.3"><a-entity template="src: #golfballs"></a-entity></a-entity>
+        <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fgolfcourse-entities.glb?v=1615740058707" gltf-entities></a-entity>
+      </a-entity>
+      
+      <a-entity id="dragon-drop" position="-7.871 0 0.447">
+        <a-image id="dragondropimg" tooltip="Drag'N Drop GLB files" position="0 1.2 0" rotation="0 47 0" src="#asset-dragondrop" material="shader: hologram; numGlitchBars: 25; alpha: 0.7; numScanLines: 0" ></a-image>
+      </a-entity>
+        
+<!--       <a-entity id="breaksagnaoid" gltf-model="#asset-breaksangaoid" position="0 0.130 -1.17" breakable-bodies="autoBody: true"></a-entity> -->
+      
+<!--       <a-entity gltf-model="https://cdn.glitch.com/11470b90-f5d9-495d-8e9b-e5159cb3c05e%2Fentitytest.glb?v=1615425860033" gltf-entities></a-entity> -->
+      
+      <a-entity id="easel" gltf-entities="" gltf-model="#asset-easel" position="-9 -0.25 7.5" rotation="0 90 0" scale="0.75 0.75 0.75"></a-entity>
+      
+      <a-entity id="pencil" pencil-tool=""  physx-body="type: dynamic" dual-wieldable="" position="-8.955560684204102 0.62418620586395264 7.844760417938232" rotation="89.96077700744513 14.935836259330197 0.16107987196565907"></a-entity>
+      <a-entity  pencil-tool="" set-brush="brushType: ImageBrush; color: green; opacity: 0.4; image: #asset-paint-brush; scale: 2; dragRotate: true" position="-8.951237678527832 0.62511505484580994 7.258919715881348" rotation="91.22296725021894 -14.178978574110868 2.458507419300864" physx-body="type: dynamic" dual-wieldable=""></a-entity>
+      <a-entity  pencil-tool="" set-brush="brushType: ImageBrush; color: red; opacity: 0.6; image: #asset-arrow-all; scale: 3; dragRotate: false; autoRotate: true; requireMovement: true" position="-8.951237678527832 0.672511505484580994 7.058919715881348" rotation="91.22296725021894 -14.178978574110868 2.458507419300864" physx-body="type: dynamic" dual-wieldable=""></a-entity>
+      
+      <a-entity id="vase" class="grab-root" dual-wieldable="" position="-8.982 -0.25 6.05" physx-body="type: dynamic; mass: 100">
+        <a-entity gltf-model="#asset-vase" enviropack-material="material: gold" drawable="" propogate-grab="" physx-no-collision></a-entity>
+        <a-entity gltf-model="#asset-vase-collision" visible="false" physx-hidden-collision></a-entity>
+      </a-entity>
+      
+      <a-entity shelf="width: 3; height: 1.3" scale="0.2 0.2 0.2" position="-9.207 0.261 9.137" rotation="0 121 0">
+        <a-entity shelf-content="" position="0 0.3 0">
+          <a-entity icon-row="">
+            <a-entity text="width: 2.260; wrapCount: 19.580; anchor: left; value: Like drawing in VR? Check out VARTISTE!"></a-entity>
+          </a-entity>
+          <a-entity icon-row="">
+            <a-entity icon-button="#asset-play-pause" tooltip="vartiste.xyz" onclick="window.open('https://vartiste.xyz')"></a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+    
+      
+      
+      <a-entity id="user-root" vartiste-user-root="" playground-user-root=""></a-entity>
+      
+      <a-entity id="spectator-camera" camera="" position="0 20 0" rotation="-95 0 0"></a-entity>
+      
+    </a-scene>
+    
+    <div style="width: 25%; background: rgba(255, 255, 255, 0.4); position: absolute; top: 0; left: 0; user-select: none">
+      <h1>
+        
+        <a href="https://glitch.com/edit/#!/fascinated-hip-period?path=index.html">aframe-vartiste-toolkit Physics playground</a>
+      </h1>
+        <a href="https://twitter.com/zach_geek">By Zach Capalbo</a>
+        <p>
+          This is a demo playground for the new physics system I'm working on. It's designed to work together with the 
+          <a href="https://www.npmjs.com/package/aframe-vartiste-toolkit">aframe-vartiste-toolkit</a>, and will eventually be integrated into it. 
+          If you like this, check out my other WebXR app, <a href="https://vartiste.xyz">VARTISTE</a>
+        </p>
+        <p>
+          Note that I often edit this glitch directly, so it may be broken from time to time. Check back in a little bit if so and there should be fun new things.
+        </p>
+        <p>
+          Desktop controls:
+            <ul>
+              <li>Right Click and drag: Look around</li>
+              <li>Shift+Click and drag: Grab and move an object</li>
+            </ul>
+        </p>
+    </div>
+  </body>
+</html>

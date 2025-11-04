@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Greifen nach Objekten</title>
+    <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+    <!--    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@67d1130/dist/aframe-extras.js"></script>
+    <!--    <script src="https://unpkg.com/super-hands@^3.0.3/dist/super-hands.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-super-hands-component@7d95eef/dist/super-hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/examples/components/grab.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/examples/components/force-pushable.js"></script>
+  </head>
+  <body>
+    <a-scene physics="driver: ammo; debug: true; debugDrawMode: 1;">
+
+<!-- 
+      <a-light type="ambient" color="white"></a-light>
+      <a-light type="point" intensity="2" position="-3 9 2"></a-light>
+-->
+      <a-entity position="0 0 0" movement-controls="fly: false"
+		wasd-controls="acceleration: 10; fly: false">
+        <a-entity sphere-collider="objects: .object"
+            super-hands hand-controls="hand: left">
+        </a-entity>
+        <a-entity hand-controls="hand: right"
+            ammo-body="type: kinematic; emitCollisionEvents: true"
+            ammo-shape="type: sphere; fit: manual; sphereRadius: 0.02;"
+            grab>
+        </a-entity>
+        <a-entity hand-controls="hand: left"
+            ammo-body="type: kinematic; emitCollisionEvents: true"
+            ammo-shape="type: sphere; fit: manual; sphereRadius: 0.02;"
+            grab>
+        </a-entity>
+        <a-entity camera position="0 1.6 0" look-controls></a-entity>
+      </a-entity>
+
+      <a-sphere radius="0.05" position="0 0.58 -0.3" color="red"
+        ammo-body="type: dynamic; shape: none; mass: 2;"
+        ammo-shape></a-sphere>
+
+      <a-entity
+        geometry="primitive: box; width: 0.1; height: 0.3; depth: 0.1"
+        position="-0.6 0.6 -0.2" rotation="0 45 0" material="color: brown"
+        ammo-body="type: dynamic; mass: 2;"
+        ammo-shape>
+      </a-entity>
+
+      <a-entity
+        geometry="primitive: box; width: 0.1; height: 0.3; depth: 0.1"
+        position="-0.6 0.6 0" rotation="0 45 0" material="color: red"
+        ammo-body="type: dynamic; mass: 2;"
+        ammo-shape>
+      </a-entity>
+
+      <a-entity
+        geometry="primitive: box; width: 0.1; height: 0.3; depth: 0.1"
+        position="-0.6 0.6 0.2" rotation="0 45 0" material="color: yellow"
+        ammo-body="type: dynamic; mass: 2;"
+        ammo-shape>
+      </a-entity>
+
+      <a-box position="0 0.5 0" width="75" height="0.1" depth="75"
+        color="green"
+        ammo-body="type: static; restitution:1"
+        ammo-shape visible="false"></a-box>
+      
+      <a-entity geometry="primitive: cylinder; height: 0.3; radius: 0.1" 
+                position="-0.5 0.7 0.4" material="color: yellow"
+                ammo-body="type: dynamic; mass: 2;"
+        ammo-shape>
+      </a-entity>
+
+      
+      <a-entity geometry="primitive: sphere; radius: 0.1"
+                position="-0.4 0.58 0.3" material="color: blue" 
+                ammo-body="type: dynamic; mass: 2;"
+        ammo-shape></a-entity>
+
+      <a-entity geometry="primitive: torus; radius: 0.07; radiusTubular: 0.05; arc: 180"
+                position="-0.4 0.68 0.3" material="color: green" 
+                ammo-body="type: dynamic; mass: 2;"
+        ammo-shape></a-entity>
+      
+       <a-entity geometry="primitive: triangle;" 
+                position="-0.46 0.74 0.4" material="color: blue" 
+                ammo-body="type: dynamic; mass: 2;"
+        ammo-shape>
+            </a-entity>
+      
+      
+      <a-assets>
+        <a-mixin id="board" geometry="depth: .05; height: 1; width: 6" material="shader: flat" pivot="0 0.5 0" position="0 -1 0"></a-mixin>
+        <a-mixin id="unhinge" animation="property: rotation; to: 0 0 0; dur: 1000"></a-mixin>
+        <img id="shadow" src="radial-shadow-2.png">
+      </a-assets>
+
+      <!-- Series of nested boards that unfold one by one. -->
+      <a-entity position="0 0.3 0.8" scale="1 1 1"
+                animation__position="property: position; to: 0 5 -8; dur: 2000"
+                animation__rotation="property: rotation; from: 0 60 0; to: 0 30 0; dur: 2500">
+
+        <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. -->
+        <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000">
+          <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250">
+            <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500">
+              <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 750">
+                <a-box mixin="board unhinge" color="#93648D" rotation="-180 0 0" animation="delay: 1000">
+              </a-box>
+            </a-box>
+          </a-box>
+        </a-box>
+        </a-box>
+      </a-entity>
+
+      <a-image position="0 -1 0" src="#shadow" rotation="-90 0 0" scale="6 6 6"></a-image>
+      <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1"></a-light>
+      <a-light type="ambient" color="#fff"></a-light>
+      
+      
+    </a-scene>
+  </body>
+</html>

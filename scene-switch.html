@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>multiple  scenes</title>
+  <script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/aframe/0.5.0/aframe.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CRoboto+Mono" media="all" /><script>WebFont.load({google: {families: ["Roboto", "Roboto Mono"]}});</script></head>
+<body class="a-body aframe-inspector-opened">
+
+  <a-scene class="fullscreen" canvas="" inspector="url:https://unpkg.com/aframe-inspector@0.5.x/dist/aframe-inspector.min.js" keyboard-shortcuts="enterVR:true;exitVR:true;resetSensor:true" screenshot="width:4096;height:2048" vr-mode-ui="enabled:true" auto-enter-vr="display:GearVR;enabled:true">
+
+
+    <a-entity camera="active:false" position="2 0 3" look-controls="" wasd-controls="" rotation="0.917 -14.668 0" scale="1 1 1" visible="true">
+      <a-entity cursor="fuse:true;fuseTimeout:1000" position="0 0 -1" geometry="primitive:ring;radiusInner:0.02;radiusOuter:0.03" material="color:black;shader:flat" rotation="0 0 0" scale="0.107538851756798 0.107538851756798 0.107538851756798" visible="true" raycaster="">
+        <a-animation begin="click" easing="ease-in" attribute="scale" fill="backwards" from="0.1 0.1 0.1" to="1 1 1"></a-animation>
+        <a-animation begin="cursor-fusing" easing="ease-in" attribute="scale" fill="forwards" from="1 1 1" to="0.1 0.1 0.1"></a-animation>
+      </a-entity>
+    </a-entity>
+
+
+
+    <a-entity id="scene1" position="0 0 0" rotation="0 0 0" scale="1 1 1" visible="">
+
+      <a-sky color="#ffffff" position="0 0 0" rotation="0 0 0" scale="-1 1 1" visible="true" material="color:#ffffff;shader:flat" geometry="primitive:sphere;radius:5000;segmentsWidth:64;segmentsHeight:20"></a-sky>
+
+      <!-- <a-plane rotation="-90 0 0" position="0 -1 -3" width="8" height="8" color="#7BC8A4"></a-plane> -->
+      <a-box color="red" onclick="setScene2()" position="0 0 0" rotation="0 0 0" scale="1 1 1" visible="true" material="color:red" geometry="primitive:box"> </a-box>
+
+      <!-- <a-entity position="1 0 0" scale="0.05 0.05 0.05">
+        <a-plane width="1" height="4" shader="flat" color="#B4E2F8">
+          <a-animation attribute="visible" from="false" to="true" delay="2000" dur="1" fill="both"></a-animation>
+        </a-plane>
+        <a-plane width="6" height="4" color="#586266" opacity="0.6" position="0 0 -.01"></a-plane>
+      </a-entity> -->
+
+      <!-- Lights. -->
+
+      <!-- <a-light type="ambient" color="#4f6487" >
+        <a-animation attribute="intensity" from="0" to="1" delay="100" dur="1000" fill="both"></a-animation>
+      </a-light> -->
+
+      <a-light id="ambient1" type="ambient" color="#4f6487" position="0 0 0" rotation="0 0 0" scale="1 1 1" visible="true" light="type:ambient;color:#4f6487">
+        <a-animation attribute="intensity" begin="aaa" from="0" to="1" delay="100" dur="1000" fill="both"></a-animation>
+      </a-light>
+
+
+      <!-- <a-light type="directional" color="#FFF" position="-0.5 1 1">
+        <a-animation attribute="intensity" from="0" to="1" delay="100" dur="1000" fill="both"></a-animation>
+      </a-entity> -->
+
+    </a-entity>
+
+    <a-entity id="scene2" visible="true" position="0 0 0" rotation="0 0 0" scale="1 1 1">
+
+      <a-sky color="#aaaaaa" position="0 0 0" rotation="0 0 0" scale="-1 1 1" visible="true" material="color:#aaaaaa;shader:flat" geometry="primitive:sphere;radius:5000;segmentsWidth:64;segmentsHeight:20"></a-sky>
+
+      <!-- <a-entity id="fading-cube" geometry="primitive: box" material="opacity: 1">
+        <a-animation attribute="material.opacity" begin="fade" to="0"></a-animation>
+      </a-entity> -->
+
+      <a-box color="green" position="0 2 -5" rotation="0 0 0" scale="1 1 1" visible="true" material="color:green" geometry="primitive:box"> </a-box>
+      <a-box color="yellow" position="5 0 -5" onclick="setScene1()" rotation="0 0 0" scale="1 1 1" visible="true" material="color:yellow" geometry="primitive:box"> </a-box>
+      <a-box color="blue" position="0 0 -3" rotation="0 0 0" scale="1 1 1" visible="true" material="color:blue" geometry="primitive:box"> </a-box>
+
+      <a-light id="ambient2" type="ambient" color="#FFFFFF" position="0 0 0" rotation="0 0 0" scale="1 1 1" visible="true" light="type:ambient;color:#FFFFFF">
+        <a-animation attribute="intensity" begin="aaa" from="0" to="1" delay="100" dur="1000" fill="both"></a-animation>
+      </a-light>
+
+    </a-entity>
+
+  <canvas class="a-canvas a-grab-cursor" data-aframe-canvas="true" style="width: 1536px; height: 684px;" width="1920" height="855"></canvas><a-entity camera="far:10000;fov:50;near:0.05;active:true" position="0 0 0" rotation="0 0 0" scale="1 1 1" visible="true"></a-entity></a-scene>
+
+  <script type="text/javascript">
+
+  // example via https://github.com/aframevr/aframe/issues/1023
+
+  function setScene2() {
+    // console.log('kkk')
+    document.getElementById('scene1').setAttribute('visible', 'false')
+    document.getElementById('scene2').setAttribute('visible', 'true')
+    // document.querySelector('#ambient2').emit('aaa');
+    // document.querySelector('#fading-cube').emit('fade');
+  }
+  function setScene1() {
+    // console.log('kkk')
+    document.getElementById('scene2').setAttribute('visible', 'false')
+    document.getElementById('scene1').setAttribute('visible', 'true')
+    // document.querySelector('#ambient1').emit('aaa');
+    // document.querySelector('#fading-cube').emit('fade');
+  }
+  </script>
+
+
+
+
+  </body>
+</html>

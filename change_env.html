@@ -1,0 +1,105 @@
+<html>
+  <head>
+  <title>Changing presets</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> 
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
+	<script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+  </head>
+  <body>
+  <a-scene>
+	  <a-box id="cube" position="-1 0.66921 -3" rotation="0 45 0" color="#4CC3D9" visible="true"></a-box>
+      <a-sphere id="sphere" position="0 1.44508 -5" radius="1.25" color="#EF2D5E" ></a-sphere>
+      <a-cylinder id="cylinder" position="1 0.8993 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+      <a-entity id="env" environment="preset: goaland"></a-entity>
+	  <a-entity windows-motion-controls="hand: right" id="controller"></a-entity>environment is automatically replaced 
+    
+    <a-sphere color="blue" position="0 1 -4.2" radius="0.6">
+        <a-animation attribute="rotation"
+                     dur="5000"
+                     
+                     repeat="indefinite"
+                     to="0 1 4.2">
+        </a-animation>
+      </a-sphere>
+  </a-scene>
+
+</body>
+<script>
+    var scene = document.querySelector('a-scene');
+    var cylinder = document.createElement('a-cylinder');
+    cylinder.setAttribute('color', '#FF9500');
+    cylinder.setAttribute('height', '1.5');
+    cylinder.setAttribute('radius', '0.6');
+    cylinder.setAttribute('position', '1.5 0.5 -2');
+    scene.appendChild(cylinder);
+    var t = 1.5;
+    var apos;
+    var bpos = (Math.sin(t*2)+1).toString();
+    function render() {
+      t += 0.01;
+      requestAnimationFrame(render);
+
+      apos = ''+(Math.sin(t*2)+1).toString();
+
+      cylinder.setAttribute('position', '1.5 '+(Math.sin(t*2)+1)+' -2.9');
+    }
+    render();
+  </script>
+
+
+<script>
+    var environment = ["egypt", "checkerboard", "forest", "goaland", "yavapai", "goldmine", "threetowers", "poison", "arches", "tron", "japan", "dream", "volcano", "starry", "osiris"]; 
+		var bool = [true, false]
+		var item = environment[Math.floor(Math.random() * environment.length)];
+    var place = 'preset: '+item;
+  
+    function loopWithDelay() {
+      let count = 0;
+      let maxCount = 15; // set the maximum number of iterations
+
+      function iteration() {
+          console.log(count);
+
+          count++;
+              
+		          console.log(place);
+              item = environment[Math.floor(Math.random() * environment.length)];
+              place = 'preset: '+item;
+		          document.getElementById('env').setAttribute('environment', place);
+          if(count <= maxCount) {
+              setTimeout(iteration, 2000); // wait 3 seconds before the next iteration
+          }
+      }
+
+      iteration();
+    }
+
+    loopWithDelay(); // call the function to start the loop
+
+</script>
+	  
+<script>
+    var scene = document.querySelector('a-scene');
+    var cylinder = document.createElement('a-cylinder');
+    cylinder.setAttribute('color', '#FF9500');
+    cylinder.setAttribute('height', '1.5');
+    cylinder.setAttribute('radius', '0.6');
+    cylinder.setAttribute('position', '1.5 0.5 -2');
+    scene.appendChild(cylinder);
+    var t = 1.5;
+    var apos;
+    var bpos = (Math.sin(t*2)+1).toString();
+    function render() {
+      t += 0.01;
+      requestAnimationFrame(render);
+
+      apos = ''+(Math.sin(t*2)+1).toString();
+
+      cylinder.setAttribute('position', '1.5 '+(Math.sin(t*2)+1)+' -2.9');
+    }
+    render();
+  </script>
+	  
+	  
+</html>

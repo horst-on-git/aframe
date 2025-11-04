@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A-Frame VR Scene</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets> 
+        <img id="background" src="https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/black-grid.png?v=1732037567813"> 
+        <!-- black-grid.png https://cdn.glitch.global/a4f90acb-36ae-41ca-bd4a-d9b8429569bb/spielplatz.JPG?v=1732093082323 -->
+      </a-assets>
+      <!-- Red Box in the middle -->
+      <a-box id="redBox" position="0 1 -5" rotation="0 45 0" color="red" depth="1" height="1" width="1"></a-box>
+      
+      <!-- Custom component to rotate objects around the box -->
+      <script>
+        AFRAME.registerComponent('orbit', {
+          schema: {
+            radius: {type: 'number', default: 2},
+            speed: {type: 'number', default: 0.01},
+            height: {type: 'number', default: 1}
+          },
+          init: function () {
+            this.theta = 0;
+          },
+          tick: function (time, timeDelta) {
+            this.theta += this.data.speed * (timeDelta / 1000); // Convert timeDelta to seconds
+            var x = this.data.radius * Math.cos(this.theta);
+            var z = this.data.radius * Math.sin(this.theta);
+            this.el.setAttribute('position', {x: x, y: this.data.height, z: z - 5});
+          }
+        });
+      </script>
+      <a-sky src="#background"></a-sky> 
+      <!-- Yellow Ball rotating in a small circle around the box -->
+      <a-sphere id="yellowBall" color="yellow" radius="0.5" position="2 1 -5" orbit="radius: 2; speed: 1; height: 1"></a-sphere>
+      
+      <!-- Green Triangle rotating in a larger circle around the box -->
+      <a-entity id="greenTriangle" geometry="primitive: triangle; vertexA: 0 0.5 0; vertexB: -0.5 -0.5 0; vertexC: 0.5 -0.5 0" material="color: green" position="3 1 -5" orbit="radius: 3; speed: 0.5; height: 1"></a-entity>
+
+      <!-- Blue Ball rotating in an even wider circle around the box -->
+      <a-sphere id="blueBall" color="blue" radius="0.5" position="4 1 -5" orbit="radius: 4; speed: 0.25; height: 1"></a-sphere>
+      
+      <!-- Camera -->
+      <a-entity camera look-controls position="0 1.6 0"></a-entity>
+    </a-scene>
+  </body>
+</html>
